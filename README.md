@@ -1,4 +1,4 @@
-# Hybrid-forecasting-method
+# Hybrid forecasting method
 
 Forecasting with a hybrid method utilizing data smoothing, a variation of the Theta method and shrinkage of seasonal factors
 
