@@ -1,13 +1,28 @@
-Forecast_ThetaSm <- function(y, h){
+Forecast_ThetaSm <- function(y, h=NULL, model=NULL, theta=NULL, type=NULL){
   #Applies the forecasting approach described in
   #E. Spiliotis, V. Assimakopoulos & K. Nikolopoulos
   #Forecasting with a hybrid method utilizing data smoothing, a variation of the Theta method and shrinkage of seasonal factors
   #International Journal of Production Economics ; 2018
   
-  SD <- SeasonalDec(y,h,frequency,type="MillerWilliams") #Apply seasonal decomposition with shrinkage
+  # 'h' is the forecasting horizon (number of periods for forecasting). The default is h=3.
+  
+  # 'theta' is the theta parameter of the method. Should be greater than 1. The default is theta=2.
+  
+  # 'model' is the curve used for identifying the long-term trend of the data. Can be "Lin", "Exp", "Log", "Inv" and "Pow" 
+  #for linear, exponential, logarithmic, inverse and power curve, respectively. The default is model="Exp".
+  
+  # 'type' denotes the decomposition method used for seasonal adjustments. It can be "MillerWilliams", "JamesStein", "LemonKrutchkoff" 
+  #or "Classical". The last one does not apply shrinkage of seasonal factors. The default is type="MillerWilliams"
+  
+  if (is.null(h)){ h<-3 }
+  if (is.null(type)){ type<-"MillerWilliams" }
+  if (is.null(model)){ model<-"Exp" }
+  if (is.null(theta)){ theta<-2 }
+  
+  SD <- SeasonalDec(y,h,frequency,type) #Apply seasonal decomposition with shrinkage
   SA_ts <- SD[[3]] #This is the seasonal adjusted time series
   Sm_ts <- NLS_Max(SA_ts,limit=1,cut=50) #This is the smoothed time series
-  forecasts <- ThetaG(Sm_ts, fh=h, theta=2, model="Exp", plot=FALSE)$mean*SD[[2]] #forecast and re-seasonalize your data
+  forecasts <- ThetaG(Sm_ts, fh=h, theta, model, plot=FALSE)$mean*SD[[2]] #forecast and re-seasonalize your data
   
   return(forecasts)
 }
