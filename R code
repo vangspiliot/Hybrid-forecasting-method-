@@ -224,6 +224,9 @@ DecomposeC = function(insample,frequency){
     if (length(frame[ is.na(frame$LE)==FALSE, ]$LE)>=3*frequency){
       for (i in 1:frequency){
         LE$LE[i]<-mean(frame$LE[ (frame$ID==i) & (is.na(frame$LE)==FALSE) & (frame$LE<max(frame$LE[(frame$ID==i)&(is.na(frame$LE)==FALSE)])) & (frame$LE>min(frame$LE[(frame$ID==i)&(is.na(frame$LE)==FALSE)])) ])
+      if (is.na(LE$LE[i])){
+          LE$LE[i]<-mean(frame$LE[ (frame$ID==i) & (is.na(frame$LE)==FALSE)  ])
+        }
       }
     }else{
       for (i in 1:frequency){
