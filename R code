@@ -18,6 +18,7 @@ Forecast_ThetaSm <- function(y, h=NULL, model=NULL, theta=NULL, type=NULL){
   if (is.null(type)){ type<-"MillerWilliams" }
   if (is.null(model)){ model<-"Exp" }
   if (is.null(theta)){ theta<-2 }
+  frequency <- frequency(y)
   
   SD <- SeasonalDec(y,h,frequency,type) #Apply seasonal decomposition with shrinkage
   SA_ts <- SD[[3]] #This is the seasonal adjusted time series
